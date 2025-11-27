@@ -314,7 +314,7 @@ def dijkstra_path(adj: Dict[Point, List[Tuple[Point, float]]],
 
 # ========= Демка з твоїм генератором =========
 
-def demo_with_random_scene(seed: int = 0, n_obs: int = 8):
+def demo_with_random_scene(seed: int = None, n_obs: int = 8):
     from random_scane import random_rectangles_scene  # твій файл
 
     polygons, start, goal = random_rectangles_scene(Point, n_obs=n_obs, seed=seed)
@@ -352,7 +352,7 @@ def plot_scene(polygons: List[List[Point]], start: Point, goal: Point, path: Lis
 
 
 if __name__ == "__main__":
-    polys, s, g, L, path = demo_with_random_scene(seed=12345, n_obs=10)
+    polys, s, g, L, path = demo_with_random_scene(n_obs=10)
     print("start =", s, "goal =", g)
     print("path length =", L)
     print("path vertices =", path)
