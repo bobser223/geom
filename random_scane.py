@@ -7,15 +7,29 @@ import random
 import math
 
 
-def _rect_poly(PointCls, x0, y0, x1, y1):
-    # CCW
-    return [
-        PointCls(x0, y0),
-        PointCls(x1, y0),
-        PointCls(x1, y1),
-        PointCls(x0, y1),
-    ]
+def _random_poly_in_rect(PointCls,
+                         x0: float, y0: float,
+                         x1: float, y1: float,
+                         min_vertices: int = 3,
+                         max_vertices: int = 8,
+                         min_r: float = 0.8,   # ← додаємо параметр
+                         max_r: float = 1.0):
+    cx = 0.5 * (x0 + x1)
+    cy = 0.5 * (y0 + y1)
+    rx = 0.5 * (x1 - x0)
+    ry = 0.5 * (y1 - y0)
 
+    k = random.randint(min_vertices, max_vertices)
+    angles = sorted(random.uniform(0.0, 2.0 * math.pi) for _ in range(k))
+
+    pts = []
+    for a in angles:
+        r = random.uniform(min_r, max_r)   # було (0.4, 1.0)
+        px = cx + r * rx * math.cos(a)
+        py = cy + r * ry * math.sin(a)
+        pts.append(PointCls(px, py))
+
+    return pts
 
 def _aabb_overlap(a, b, margin: float = 0.0) -> bool:
     # a,b: (x0,y0,x1,y1), with x0<x1, y0<y1
@@ -98,7 +112,7 @@ def random_rectangles_scene(PointCls,
         raise RuntimeError(f"Не вдалося згенерувати {n_obs} неперетинних прямокутників. "
                            f"Спробуй менше n_obs або менші size_range, або більший bbox.")
 
-    polygons = [_rect_poly(PointCls, *r) for r in rects]
+    polygons = [_random_poly_in_rect(PointCls, *r) for r in rects]
 
     # Старт і фініш (не всередині перешкод) + хоч якась відстань між ними
     for _ in range(2000):
