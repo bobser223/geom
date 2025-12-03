@@ -7,7 +7,6 @@ from typing import List, Dict, Tuple, Optional
 import math
 import heapq
 
-from fontTools.ttLib.woff2 import bboxFormat
 from sortedcontainers import SortedList  # pip install sortedcontainers
 
 EPS = 1e-9
@@ -349,48 +348,12 @@ def dijkstra_path(
     return dist_map[goal], path
 
 
-# ===================== Plot (optional) =====================
+# ===================== Public API =====================
 
-def plot_scene(polygons: List[List[Point]], start: Point, goal: Point, path: List[Point]):
-    import matplotlib.pyplot as plt
-
-    def close(poly: List[Point]) -> List[Point]:
-        poly = _normalize_contour(poly)
-        return poly + [poly[0]] if poly else poly
-
-    for poly in polygons:
-        c = close(poly)
-        xs = [p.x for p in c]
-        ys = [p.y for p in c]
-        plt.plot(xs, ys)
-
-    plt.scatter([start.x], [start.y], marker="o")
-    plt.scatter([goal.x], [goal.y], marker="x")
-
-    if path:
-        px = [p.x for p in path]
-        py = [p.y for p in path]
-        plt.plot(px, py)
-
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.show()
-
-
-# ===================== Demo with your generator =====================
-
-def demo_with_random_scene(seed: int = None, n_obs: int = 8, bbox: tuple[float, float, float, float] = (0, 0, 100, 100)):
-    from random_scane import random_rectangles_scene  # your file random_scene.py must be рядом
-
-    polygons, start, goal = random_rectangles_scene(Point, n_obs=n_obs, seed=seed, bbox=bbox)
-    adj, _ = build_visibility_graph(polygons, start, goal)
-    length, path = dijkstra_path(adj, start, goal)
-
-    print("start =", start, "goal =", goal)
-    print("path length =", length)
-    print("path vertices =", path)
-
-    plot_scene(polygons, start, goal, path)
-
-
-if __name__ == "__main__":
-    demo_with_random_scene(seed=None, n_obs=20, bbox= (0, 0, 100, 100))
+__all__ = [
+    "Point",
+    "Segment",
+    "build_visibility_graph",
+    "dijkstra_path",
+    "visibility_graph_segments",
+]
