@@ -12,7 +12,7 @@ def _random_poly_in_rect(PointCls,
                          x1: float, y1: float,
                          min_vertices: int = 3,
                          max_vertices: int = 8,
-                         min_r: float = 0.8,   # ← додаємо параметр
+                         min_r: float = 0.8,
                          max_r: float = 1.0):
     cx = 0.5 * (x0 + x1)
     cy = 0.5 * (y0 + y1)
@@ -24,7 +24,7 @@ def _random_poly_in_rect(PointCls,
 
     pts = []
     for a in angles:
-        r = random.uniform(min_r, max_r)   # було (0.4, 1.0)
+        r = random.uniform(min_r, max_r)
         px = cx + r * rx * math.cos(a)
         py = cy + r * ry * math.sin(a)
         pts.append(PointCls(px, py))

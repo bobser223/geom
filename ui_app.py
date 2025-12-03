@@ -246,12 +246,16 @@ class SceneEditor:
 
         width = int(self.canvas.cget("width"))
         height = int(self.canvas.cget("height"))
+        min_dim = float(min(width, height))
+        min_size = max(20.0, 0.08 * min_dim)
+        max_size = max(min_size + 10.0, 0.18 * min_dim)
 
         try:
             polygons, start, goal = random_rectangles_scene(
                 Point,
                 n_obs=n_obs,
                 bbox=(0.0, 0.0, float(width), float(height)),
+                size_range=(min_size, max_size),
             )
         except Exception as exc:  # noqa: BLE001
             messagebox.showerror("Помилка генерації", str(exc))
